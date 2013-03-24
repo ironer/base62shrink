@@ -51,7 +51,7 @@ class Base62Shrink {
 		$compArray = explode('6', strtr($base8, array('7' => '6-')));
 		for ($intArray = array(), $i = 0, $j = count($compArray), $k = 0; $i < $j; $k = $l) {
 			$intArray[] = ($l = ($k + intVal($compArray[$i++], 6)));
-		};
+		}
 		return $intArray;
 	}
 
@@ -74,7 +74,7 @@ class Base62Shrink {
 	}
 
 	private static function decompressLZW($compressed = array()) {
-		$dict = self::$LZWarray; $entry = ''; $dictSize = 256;
+		$dict = self::$LZWarray; $dictSize = 256;
 
 		$result = $w = chr($compressed[0]);
 		for ($i = 1, $j = count($compressed); $i < $j; ++$i) {
