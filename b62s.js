@@ -1,13 +1,56 @@
-var b62s = {};
+var b62s = {'initialized': false};
 
 b62s.compress = function(text) {
-	b62s._bd || b62s._init();
-	return text ? b62s._base8To62(b62s._deltaShrinkToBase8(b62s._compressLZW(b62s._encodeUtf8(text)))) : '';
+	b62s.initialized || b62s._init();
+	return text ? b62s._deltaShrinkToBase8(b62s._compressLZW(b62s._encodeUtf8(text))) : '';
 };
 
-b62s.decompress = function(compressed) {
-	b62s._bd || b62s._init();
-	return compressed ? b62s._decodeUtf8(b62s._decompressLZW(b62s._deltaUnshrinkFromBase8(b62s._base62To8(compressed)))) : '';
+b62s.decompress = function(base8) {
+	b62s.initialized || b62s._init();
+	return base8 ? b62s._decodeUtf8(b62s._decompressLZW(b62s._deltaUnshrinkFromBase8(base8))) : '';
+};
+
+b62s.base8To32k = function(base8) {
+	if (!base8) return '';
+	var add = (5 - (base8.length + 1) % 5) % 5;
+	base8 = add + base8;
+	while (add-- > 0) base8 += '0';
+
+	for (var base32k = '', i = 0, j = base8.length, k; i < j; i += 5) {
+		k = parseInt((base8.substr(i, 5)), 8) + 13312;
+		if (k > 19893) k += (k > 40795) ? 16548 : 74;
+		base32k += String.fromCharCode(k);
+	}
+	return base32k;
+};
+
+b62s.base32kTo8 = function(base32k) {
+	if (!base32k) return '';
+	for (var base8 = '', i = 0, j = base32k.length, k; i < j; ++i) {
+		k = base32k.charCodeAt(i) - 13312;
+		if (k > 6581) k -= (k > 27557) ? 16548 : 74;
+		k = parseInt(k).toString(8);
+		while (k.length < 5) k = '0' + k;
+		base8 += k;
+	}
+	return base8[0] === '0' ? base8.slice(1) : base8.slice(1, -parseInt(base8[0]));
+};
+
+b62s.base8To62 = function(base8) {
+	if (!base8) return '';
+	b62s.initialized || b62s._init();
+	base8 = base8.length % 2 ? '0' + base8 : '1' + base8 + '0';
+	for (var base62 = '', i = 0, j = base8.length; ++i < j; ++i) base62 += b62s._b62array[parseInt((base8.substr(i - 1, 2)), 8)];
+	return base62;
+};
+
+b62s.base62To8 = function(base62) {
+	if (!base62) return '';
+	b62s.initialized || b62s._init();
+	for (var base8 = '', i = 0, j = base62.length, k; i < j; ++i) {
+		base8 += (k = parseInt(b62s._b62object[base62[i]]).toString(8))[1] ? k[0] + k[1] : '0' + k[0];
+	}
+	return base8[0] === '0' ? base8.slice(1) : base8.slice(1, -1);
 };
 
 b62s._init = function() {
@@ -18,20 +61,7 @@ b62s._init = function() {
 	b62s._LZWarray = [];
 	b62s._LZWobject = {};
 	for (i = 0; i < 256; ++i) b62s._LZWobject[b62s._LZWarray[i] = String.fromCharCode(i)] = i;
-	b62s._bd = true;
-};
-
-b62s._base8To62 = function(base8) {
-	base8 = base8.length % 2 ? '1' + base8 : '0' + base8 + '0';
-	for (var base62 = '', i = 0, j = base8.length; ++i < j; ++i) base62 += b62s._b62array[parseInt((base8.substr(i - 1, 2)), 8)];
-	return base62;
-};
-
-b62s._base62To8 = function(base62) {
-	for (var base8 = '', i = 0, j = base62.length, k; i < j; ++i) {
-		base8 += (k = parseInt(b62s._b62object[base62[i]]).toString(8))[1] ? k[0] + k[1] : '0' + k[0];
-	}
-	return base8[0] === '1' ? base8.slice(1) : base8.slice(1, -1);
+	b62s.initialized = true;
 };
 
 b62s._deltaShrinkToBase8 = function(intArray) {

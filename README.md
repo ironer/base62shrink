@@ -1,8 +1,11 @@
 base62shrink
 ============
 
-Short javascript to perform LZW compression on longer structured or repetitive UTF8 data to some
-universally web safe form.
+Simple javascript to perform LZW compression on longer structured or repetitive UTF8 data
+(like stringified JSON) to some universally web safe form. Simple PHP class for server side
+data processing.
+
+Added: Possibility to encode the compressed base8 data to base32k for storing in local storage.
 
 Demo: http://b62s.ironer.cz
 
@@ -11,6 +14,7 @@ Demo: http://b62s.ironer.cz
 Used sources:
 - LZW compression: http://rosettacode.org/wiki/LZW_compression#JavaScript
 - UTF8 encode & decode: http://ecmanaut.blogspot.cz/2006/07/encoding-decoding-utf8-in-javascript.html
+- Base32k encode & decode: http://lists.xml.org/archives/xml-dev/200307/msg00505.html
 
 ***
 

@@ -25,7 +25,7 @@ class Base62Shrink {
 	}
 
 	private static function base8To62($base8 = '') {
-		$base8 = strlen($base8) % 2 ? '1' . $base8 : '0' . $base8 . '0';
+		$base8 = strlen($base8) % 2 ? '0' . $base8 : '1' . $base8 . '0';
 		for ($base62 = '', $i = 0, $j = strlen($base8); ++$i < $j; ++$i) {
 			$base62 .= self::$b62array[intVal((substr($base8, $i - 1, 2)), 8)];
 		}
@@ -36,7 +36,7 @@ class Base62Shrink {
 		for ($base8 = '', $i = 0, $j = strlen($base62); $i < $j; ++$i) {
 			$base8 .= str_pad(base_convert((string) self::$b62object[$base62[$i]], 10, 8), 2, '0', STR_PAD_LEFT);
 		}
-		return $base8[0] === '1' ? substr($base8, 1) : substr($base8, 1, -1);
+		return $base8[0] === '0' ? substr($base8, 1) : substr($base8, 1, -1);
 	}
 
 	private static function deltaShrinkToBase8($intArray = array()) {
