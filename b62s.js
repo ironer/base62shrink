@@ -66,7 +66,7 @@ b62s._compressLZW = function(text) {
 
 b62s._decompressLZW = function(compressed) {
 	"use strict";
-	var i, j, dict = JSON.parse(JSON.stringify(b62s._LZWarray)), w, result, k, entry = "", dictSize = 256;
+	var i, j, dict = JSON.parse(JSON.stringify(b62s._LZWarray)), w, result, k, entry, dictSize = 256;
 
 	result = w = String.fromCharCode(compressed[0]);
 	for (i = 1, j = compressed.length; i < j; ++i) {

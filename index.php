@@ -21,7 +21,7 @@ $time = microtime(TRUE) - $time; $memory = memory_get_peak_usage() - $memory;
 	<strong>Deshrinked in PHP</strong> length: <i id="paLen"></i> /
 	time: <i><?=number_format($time * 1000, 0, '.', ' ')?> ms</i> /
 	used memory: <i><?=number_format($memory / 1024, 0, '.', ' ')?> kB</i><br>
-	<textarea id="phparea" class="readonly" rows="5" cols="100" readonly><?=htmlspecialchars($request)?></textarea>
+	<textarea id="phparea" class="readonly" rows="5" cols="100" readonly></textarea>
 	<br><br>
 	<strong>InputArea</strong> length: <i id="iaLen"></i><br>
 	<textarea id="inputarea" rows="5" cols="100"></textarea>
@@ -72,6 +72,7 @@ $time = microtime(TRUE) - $time; $memory = memory_get_peak_usage() - $memory;
 		};
 
 		areas.inputarea.onkeyup = areas.refresh;
+		areas.phparea.value = <?=json_encode($request)?>;
 		areas.inputarea.value = areas.inputarea.value || areas.phparea.value;
 		areas.refresh();
 	</script>
