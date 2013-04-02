@@ -18,24 +18,20 @@ class Base62Shrink {
 	}
 
 	private static function init() {
-		self::$b62array = str_split('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789');
-		self::$b62object = array_flip(self::$b62array);
+		$b62string = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+		for ($i = 0; $i < 62; ++$i) self::$b62array[self::$b62object[$b62string[$i]] = (07 & $i >> 3) . (07 & $i)] = $b62string[$i];
 		for ($i = 0; $i < 256; ++$i) self::$LZWobject[self::$LZWarray[$i] = chr($i)] = $i;
 		self::$init = FALSE;
 	}
 
 	private static function base8To62($base8 = '') {
 		$base8 = strlen($base8) % 2 ? '0' . $base8 : '1' . $base8 . '0';
-		for ($base62 = '', $i = 0, $j = strlen($base8); ++$i < $j; ++$i) {
-			$base62 .= self::$b62array[intVal((substr($base8, $i - 1, 2)), 8)];
-		}
+		for ($base62 = '', $i = 0, $j = strlen($base8); $i < $j; $i += 2) $base62 .= self::$b62array[substr($base8, $i, 2)];
 		return $base62;
 	}
 
 	private static function base62To8($base62 = '') {
-		for ($base8 = '', $i = 0, $j = strlen($base62); $i < $j; ++$i) {
-			$base8 .= str_pad(base_convert((string) self::$b62object[$base62[$i]], 10, 8), 2, '0', STR_PAD_LEFT);
-		}
+		for ($base8 = '', $i = 0, $j = strlen($base62); $i < $j; ++$i) $base8 .= self::$b62object[$base62[$i]];
 		return $base8[0] === '0' ? substr($base8, 1) : substr($base8, 1, -1);
 	}
 
@@ -58,8 +54,8 @@ class Base62Shrink {
 	private static function compressLZW($text = '') {
 		$dict = self::$LZWobject; $w = ''; $result = array(); $dictSize = 256;
 
-		for ($i = 0, $j = mb_strlen($text); $i < $j; ++$i) {
-			$c = mb_substr($text, $i, 1);
+		for ($i = 0, $j = strlen($text); $i < $j; ++$i) {
+			$c = $text[$i];
 			$wc = $w . $c;
 			if (isset($dict[$wc])) $w = $wc;
 			else {
@@ -80,10 +76,10 @@ class Base62Shrink {
 		for ($i = 1, $j = count($compressed); $i < $j; ++$i) {
 			$k = $compressed[$i];
 			if (isset($dict[$k])) $entry = $dict[$k];
-			else if ($k === $dictSize) $entry = $w . mb_substr($w, 0, 1);
+			else if ($k === $dictSize) $entry = $w . $w[0];
 			else return NULL;
 
-			$dict[$dictSize++] = $w . mb_substr($entry, 0, 1);
+			$dict[$dictSize++] = $w . $entry[0];
 			$result .= $w = $entry;
 		}
 		return $result;

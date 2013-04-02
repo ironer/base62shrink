@@ -74,25 +74,38 @@ $time = microtime(TRUE) - $time; $memory = memory_get_peak_usage() - $memory;
 			var input = areas.inputarea.value;
 			areas.iaLen.innerHTML = areas.formNum(input.length);
 
-			var uriEncoded = encodeURI(input);
+			var startTime = new Date().getTime(), uriEncoded = encodeURI(input), endTime = new Date().getTime();
 			areas.uriarea.value = uriEncoded;
-			areas.uaLen.innerHTML = areas.formNum(uriEncoded.length);
+			areas.uaLen.innerHTML = areas.formNum(uriEncoded.length) + ' / ' + areas.formNum(endTime - startTime) + ' ms';
 
-			var base8 = b62s.compress(input);
-
+			startTime = new Date().getTime();
+			var base8 = b62s.compress(input), compressTime = new Date().getTime() - startTime;
 			var base62 = b62s.base8To62(base8);
-			areas.base62area.value = base62;
-			areas.b62aLen.innerHTML = areas.formNum(base62.length);
-			var check62 = b62s.decompress(b62s.base62To8(base62));
-			areas.check62area.value = check62;
-			areas.c62aLen.innerHTML = areas.formNum(check62.length);
+			endTime = new Date().getTime();
 
+			areas.base62area.value = base62;
+			areas.b62aLen.innerHTML = areas.formNum(base62.length) + ' / ' + areas.formNum(endTime - startTime) + ' ms';
+
+			startTime = new Date().getTime();
+			var check62 = b62s.decompress(b62s.base62To8(base62));
+			endTime = new Date().getTime();
+
+			areas.check62area.value = check62;
+			areas.c62aLen.innerHTML = areas.formNum(check62.length) + ' / ' + areas.formNum(endTime - startTime) + ' ms';
+
+			startTime = new Date().getTime();
 			var base32k = b62s.base8To32k(base8);
+			endTime = new Date().getTime();
+
 			areas.base32karea.value = base32k;
-			areas.b32kaLen.innerHTML = areas.formNum(base32k.length);
+			areas.b32kaLen.innerHTML = areas.formNum(base32k.length) + ' / ' + areas.formNum(endTime - startTime + compressTime) + ' ms';
+
+			startTime = new Date().getTime();
 			var check32k = b62s.decompress(b62s.base32kTo8(base32k));
+			endTime = new Date().getTime();
+
 			areas.check32karea.value = check32k;
-			areas.c32kaLen.innerHTML = areas.formNum(check32k.length);
+			areas.c32kaLen.innerHTML = areas.formNum(check32k.length) + ' / ' + areas.formNum(endTime - startTime) + ' ms';
 		};
 
 		areas.formNum = function(num) {
