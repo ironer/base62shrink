@@ -11,6 +11,7 @@
 		}
 	],
 	"autoload": {
-		"classmap": ["Base62Shrink/"]
+		"classmap": ["Base62Shrink/"],
+		"files": ["Base62Shrink/loader.php"]
 	}
 }
