@@ -5,7 +5,7 @@ else if (!empty($_GET['b62s']) && is_string($_GET['b62s'])) $request = $_GET['b6
 else $request = '';
 
 $memory = memory_get_peak_usage(); $time = microtime(TRUE);
-if ($request) { require_once('Base62Shrink.php'); $request = Base62Shrink::decompress($request); }
+if ($request) { require_once('../Base62Shrink/Base62Shrink.php'); $request = Base62Shrink::decompress($request); }
 $time = microtime(TRUE) - $time; $memory = memory_get_peak_usage() - $memory;
 
 ?>
@@ -14,7 +14,7 @@ $time = microtime(TRUE) - $time; $memory = memory_get_peak_usage() - $memory;
 <head>
 	<meta charset="utf-8" />
 	<title>base62shrink</title>
-	<script type="text/javascript" src="b62s.js"></script>
+	<script type="text/javascript" src="../Base62Shrink/b62s.js"></script>
 	<style>body { background: #eee; } label { font-weight: bold; } .pad { height: 10px; } .readonly { background: #ddd; }</style>
 </head>
 <body>

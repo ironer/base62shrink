@@ -1,0 +1,16 @@
+{
+	"name": "ironer/base62shrink",
+	"type": "library",
+	"description": "Simple javascript to perform LZW compression on longer structured or repetitive UTF8 data (like stringified JSON) to some universally web safe form. Simple PHP class for server side data processing.",
+	"keywords": ["compression"],
+	"license": ["BSD-3-Clause", "GPL-2.0", "GPL-3.0"],
+	"authors": [
+		{
+			"name": "Stefan Fiedler",
+			"email": "ironer80@gmail.com"
+		}
+	],
+	"autoload": {
+		"classmap": ["Base62Shrink/"]
+	}
+}
