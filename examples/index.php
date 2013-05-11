@@ -14,7 +14,9 @@ $time = microtime(TRUE) - $time; $memory = memory_get_peak_usage() - $memory;
 <head>
 	<meta charset="utf-8" />
 	<title>base62shrink</title>
-	<script type="text/javascript" src="../Base62Shrink/b62s.js"></script>
+	<script>
+	<? readfile(__DIR__ . '/../Base62Shrink/b62s.js'); ?>
+	</script>
 	<style>body { background: #eee; } label { font-weight: bold; } .pad { height: 10px; } .readonly { background: #ddd; }</style>
 </head>
 <body>
@@ -32,7 +34,7 @@ $time = microtime(TRUE) - $time; $memory = memory_get_peak_usage() - $memory;
 	<textarea id="uriarea" class="readonly" rows="3" cols="100" readonly></textarea>
 	
 	<div class="pad"></div>
-	<form action="<?=$_SERVER["PHP_SELF"]?>" method="post">
+	<form action="" method="post">
 		<label for="base62area">Base62Shrink</label> length: <i id="b62aLen"></i>
 		<input type="submit" value="Send by GET" onmousedown="this.parentNode.method='get'">
 		<input type="submit" value="Send by POST" onmousedown="this.parentNode.method='post'"><br>
