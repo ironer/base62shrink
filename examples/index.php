@@ -20,48 +20,48 @@ $time = microtime(TRUE) - $time; $memory = memory_get_peak_usage() - $memory;
 	<style>body { background: #eee; } label { font-weight: bold; } .pad { height: 10px; } .readonly { background: #ddd; }</style>
 </head>
 <body>
-	<label for="phparea">Deshrinked in PHP from base62</label> length: <i id="paLen"></i> /
+	<label for="phpArea">Deshrinked in PHP from base62</label> length: <i id="paLen"></i> /
 	time: <i><?=number_format($time * 1000, 0, '.', ' ')?> ms</i> /
 	used memory: <i><?=number_format($memory / 1024, 0, '.', ' ')?> kB</i><br>
-	<textarea id="phparea" class="readonly" rows="3" cols="100" readonly></textarea>
+	<textarea id="phpArea" class="readonly" rows="3" cols="100" readonly></textarea>
 
 	<div class="pad"></div>
-	<label for="inputarea">InputArea</label> length: <i id="iaLen"></i><br>
-	<textarea id="inputarea" rows="3" cols="100"></textarea>
+	<label for="inputArea">InputArea</label> length: <i id="iaLen"></i><br>
+	<textarea id="inputArea" rows="3" cols="100"></textarea>
 
 	<div class="pad"></div>
-	<label for="uriarea">encodeURI</label> length: <i id="uaLen"></i><br>
-	<textarea id="uriarea" class="readonly" rows="3" cols="100" readonly></textarea>
+	<label for="uriArea">encodeURI</label> length: <i id="uaLen"></i><br>
+	<textarea id="uriArea" class="readonly" rows="3" cols="100" readonly></textarea>
 	
 	<div class="pad"></div>
 	<form action="" method="post">
-		<label for="base62area">Base62Shrink</label> length: <i id="b62aLen"></i>
+		<label for="base62Area">Base62Shrink</label> length: <i id="b62aLen"></i>
 		<input type="submit" value="Send by GET" onmousedown="this.parentNode.method='get'">
 		<input type="submit" value="Send by POST" onmousedown="this.parentNode.method='post'"><br>
-		<textarea name="b62s" id="base62area" class="readonly" rows="3" cols="100" readonly></textarea>
+		<textarea name="b62s" id="base62Area" class="readonly" rows="3" cols="100" readonly></textarea>
 	</form>
 
 	<div class="pad"></div>
-	<label for="check62area">Deshrinked in js from base62</label> length: <i id="c62aLen"></i><br>
-	<textarea id="check62area" class="readonly" rows="3" cols="100" readonly></textarea>
+	<label for="check62Area">Deshrinked in js from base62</label> length: <i id="c62aLen"></i><br>
+	<textarea id="check62Area" class="readonly" rows="3" cols="100" readonly></textarea>
 
 	<div class="pad"></div>
-	<label for="base32karea">Base32kShrink</label> length: <i id="b32kaLen"></i><br>
-	<textarea id="base32karea" class="readonly" rows="3" cols="100" readonly></textarea>
+	<label for="base32kArea">Base32kShrink</label> length: <i id="b32kaLen"></i><br>
+	<textarea id="base32kArea" class="readonly" rows="3" cols="100" readonly></textarea>
 
 	<div class="pad"></div>
-	<label for="check32karea">Deshrinked in js from base32k</label> length: <i id="c32kaLen"></i><br>
-	<textarea id="check32karea" class="readonly" rows="3" cols="100" readonly></textarea>
+	<label for="check32kArea">Deshrinked in js from base32k</label> length: <i id="c32kaLen"></i><br>
+	<textarea id="check32kArea" class="readonly" rows="3" cols="100" readonly></textarea>
 
 	<script>
 		var areas = {};
-		areas.phparea = document.getElementById('phparea');
-		areas.inputarea = document.getElementById('inputarea');
-		areas.uriarea = document.getElementById('uriarea');
-		areas.base62area = document.getElementById('base62area');
-		areas.check62area = document.getElementById('check62area');
-		areas.base32karea = document.getElementById('base32karea');
-		areas.check32karea = document.getElementById('check32karea');
+		areas.phpArea = document.getElementById('phpArea');
+		areas.inputArea = document.getElementById('inputArea');
+		areas.uriArea = document.getElementById('uriArea');
+		areas.base62Area = document.getElementById('base62Area');
+		areas.check62Area = document.getElementById('check62Area');
+		areas.base32kArea = document.getElementById('base32kArea');
+		areas.check32kArea = document.getElementById('check32kArea');
 
 		areas.paLen = document.getElementById('paLen');
 		areas.iaLen = document.getElementById('iaLen');
@@ -72,12 +72,12 @@ $time = microtime(TRUE) - $time; $memory = memory_get_peak_usage() - $memory;
 		areas.c32kaLen = document.getElementById('c32kaLen');
 
 		areas.refresh = function() {
-			areas.paLen.innerHTML = areas.formNum(areas.phparea.value.length);
-			var input = areas.inputarea.value;
+			areas.paLen.innerHTML = areas.formNum(areas.phpArea.value.length);
+			var input = areas.inputArea.value;
 			areas.iaLen.innerHTML = areas.formNum(input.length);
 
 			var startTime = new Date().getTime(), uriEncoded = encodeURI(input), endTime = new Date().getTime();
-			areas.uriarea.value = uriEncoded;
+			areas.uriArea.value = uriEncoded;
 			areas.uaLen.innerHTML = areas.formNum(uriEncoded.length) + ' / ' + areas.formNum(endTime - startTime) + ' ms';
 
 			startTime = new Date().getTime();
@@ -85,28 +85,28 @@ $time = microtime(TRUE) - $time; $memory = memory_get_peak_usage() - $memory;
 			var base62 = b62s.base8To62(base8);
 			endTime = new Date().getTime();
 
-			areas.base62area.value = base62;
+			areas.base62Area.value = base62;
 			areas.b62aLen.innerHTML = areas.formNum(base62.length) + ' / ' + areas.formNum(endTime - startTime) + ' ms';
 
 			startTime = new Date().getTime();
 			var check62 = b62s.decompress(b62s.base62To8(base62));
 			endTime = new Date().getTime();
 
-			areas.check62area.value = check62;
+			areas.check62Area.value = check62;
 			areas.c62aLen.innerHTML = areas.formNum(check62.length) + ' / ' + areas.formNum(endTime - startTime) + ' ms';
 
 			startTime = new Date().getTime();
 			var base32k = b62s.base8To32k(base8);
 			endTime = new Date().getTime();
 
-			areas.base32karea.value = base32k;
+			areas.base32kArea.value = base32k;
 			areas.b32kaLen.innerHTML = areas.formNum(base32k.length) + ' / ' + areas.formNum(endTime - startTime + compressTime) + ' ms';
 
 			startTime = new Date().getTime();
 			var check32k = b62s.decompress(b62s.base32kTo8(base32k));
 			endTime = new Date().getTime();
 
-			areas.check32karea.value = check32k;
+			areas.check32kArea.value = check32k;
 			areas.c32kaLen.innerHTML = areas.formNum(check32k.length) + ' / ' + areas.formNum(endTime - startTime) + ' ms';
 		};
 
@@ -114,9 +114,9 @@ $time = microtime(TRUE) - $time; $memory = memory_get_peak_usage() - $memory;
 			return ('' + num).split('').reverse().join('').replace(/(.{3})(?=.)/g, '$1 ').split('').reverse().join('');
 		};
 
-		areas.inputarea.onkeyup = areas.refresh;
-		areas.phparea.value = <?=json_encode($request)?>;
-		areas.inputarea.value = areas.inputarea.value || areas.phparea.value;
+		areas.inputArea.onkeyup = areas.refresh;
+		areas.phpArea.value = <?=json_encode($request)?>;
+		areas.inputArea.value = areas.inputArea.value || areas.phpArea.value;
 		areas.refresh();
 	</script>
 </body>
