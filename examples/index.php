@@ -34,7 +34,7 @@ $time = microtime(TRUE) - $time; $memory = memory_get_peak_usage() - $memory;
 	<textarea id="uriArea" class="readonly" rows="3" cols="100" readonly></textarea>
 	
 	<div class="pad"></div>
-	<form action="" method="post">
+	<form id="base62Form" action="" method="post">
 		<label for="base62Area">Base62Shrink</label> length: <i id="b62aLen"></i>
 		<input type="submit" value="Send by GET" onmousedown="this.parentNode.method='get'">
 		<input type="submit" value="Send by POST" onmousedown="this.parentNode.method='post'"><br>
@@ -54,6 +54,8 @@ $time = microtime(TRUE) - $time; $memory = memory_get_peak_usage() - $memory;
 	<textarea id="check32kArea" class="readonly" rows="3" cols="100" readonly></textarea>
 
 	<script>
+		document.getElementById('base62Form').action = window.location.protocol + '//' + window.location.host + window.location.pathname;
+
 		var areas = {};
 		areas.phpArea = document.getElementById('phpArea');
 		areas.inputArea = document.getElementById('inputArea');
